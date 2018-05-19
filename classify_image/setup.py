@@ -12,7 +12,7 @@ setup(
     author='taniy935',
     author_email='taniy935@yandex.ru',
     license='MIT',
-    install_requires=[],
+    install_requires=['tensorflow'],
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.5',
