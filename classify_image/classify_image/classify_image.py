@@ -44,6 +44,7 @@ import tarfile
 import numpy as np
 from six.moves import urllib
 import tensorflow as tf
+from .__init__ import __version__
 
 FLAGS = None
 
@@ -193,6 +194,10 @@ def main(_):
   run_inference_on_image(image)
 
 
+__prog__ = "Classify image"
+__description__ = "Classify image"
+__version_string__ = '%s: version %s' % (__prog__, __version__)
+
 parser = argparse.ArgumentParser()
 # classify_image_graph_def.pb:
 #   Binary representation of the GraphDef protocol buffer.
@@ -200,6 +205,11 @@ parser = argparse.ArgumentParser()
 #   Map from synset ID to a human readable string.
 # imagenet_2012_challenge_label_map_proto.pbtxt:
 #   Text representation of a protocol buffer mapping a label to synset ID.
+
+parser.add_argument('-V', '--version',
+                    action='version',
+                    version=__version_string__
+)
 parser.add_argument(
   '--model_dir',
   type=str,
