@@ -44,6 +44,9 @@ import tarfile
 import numpy as np
 from six.moves import urllib
 import tensorflow as tf
+from tkinter import Frame, Label, Button, W, E, N, S
+from tkinter.filedialog import askopenfilename
+from tkinter.messagebox import showerror
 from .__init__ import __version__
 
 FLAGS = None
@@ -194,6 +197,46 @@ def main(_):
   run_inference_on_image(image)
 
 
+FNAME = ''
+
+class GuiImage(Frame):
+  def __init__(self):
+    Frame.__init__(self)
+    self.master.title("Select Image")
+    self.master.rowconfigure(5, weight=1)
+    self.master.columnconfigure(5, weight=1)
+    self.grid(sticky=W+E+N+S)
+    self.master.geometry("300x150")
+    self.label1 = Label(self, text='\n\
+    Select Image file:\n\
+    ')
+    self.label1.grid()
+    self.button = Button(self, text="Browse", command=self.load_file, width=10)
+    self.button.grid()
+    self.label_empty = Label(self, text='')
+    self.label_empty.grid()
+    self.button_exit = Button(self, text='Exit', command=self.save_and_exit, height=1, width=10)
+    self.button_exit.grid()
+    self.fname = ''
+
+
+  def load_file(self):
+    filetypes = [("Image Files", ("*.jpg", "*.gif", "*.jpeg")),
+                 ("JPEG",'*.jpep'),
+                 ("GIF",'*.gif'),
+                 ('All','*')]
+    fname = askopenfilename(filetypes=filetypes)
+    if fname != '':
+      print('File name: %s' % fname)
+      global FNAME
+      FNAME = fname
+    else:
+      showerror("Open Source File", "Failed to read file\n'%s'" % fname)
+
+  def save_and_exit(self):
+    self.quit()
+
+
 __prog__ = "Classify image"
 __description__ = "Classify image"
 __version_string__ = '%s: version %s' % (__prog__, __version__)
@@ -210,6 +253,12 @@ parser.add_argument('-V', '--version',
                     action='version',
                     version=__version_string__
 )
+parser.add_argument('-g', '--gui',
+                    dest='gui_requeset',
+                    action='store_true',
+                    default=False,
+                    help='run GUI to select imput image'
+)
 parser.add_argument(
   '--model_dir',
   type=str,
@@ -220,10 +269,11 @@ parser.add_argument(
   imagenet_2012_challenge_label_map_proto.pbtxt.\
   """
 )
+IMAGE_NAME = ''
 parser.add_argument(
   '--image_file',
   type=str,
-  default='',
+  default=IMAGE_NAME,
   help='Absolute path to image file.'
 )
 parser.add_argument(
@@ -232,5 +282,11 @@ parser.add_argument(
   default=5,
   help='Display this many predictions.'
 )
+
+args = parser.parse_args()
+if args.gui_requeset:
+  GuiImage().mainloop()
+  IMAGE_NAME = FNAME
+
 FLAGS, unparsed = parser.parse_known_args()
 tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
