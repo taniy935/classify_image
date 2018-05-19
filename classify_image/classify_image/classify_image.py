@@ -270,6 +270,11 @@ parser.add_argument(
   """
 )
 IMAGE_NAME = ''
+args = parser.parse_args()
+if args.gui_requeset:
+  GuiImage().mainloop()
+  IMAGE_NAME = FNAME
+
 parser.add_argument(
   '--image_file',
   type=str,
@@ -282,11 +287,6 @@ parser.add_argument(
   default=5,
   help='Display this many predictions.'
 )
-
-args = parser.parse_args()
-if args.gui_requeset:
-  GuiImage().mainloop()
-  IMAGE_NAME = FNAME
 
 FLAGS, unparsed = parser.parse_known_args()
 tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
