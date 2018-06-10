@@ -270,10 +270,6 @@ parser.add_argument(
   """
 )
 IMAGE_NAME = ''
-args = parser.parse_args()
-if args.gui_requeset:
-  GuiImage().mainloop()
-  IMAGE_NAME = FNAME
 
 parser.add_argument(
   '--image_file',

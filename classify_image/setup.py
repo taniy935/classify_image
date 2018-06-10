@@ -19,7 +19,8 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'classify_image = classify_image.classify_image:run'
+            'classify_image = classify_image.classify_image:run',
+            'classify_image_g = classify_image.classify_image_g:run'
         ]
     },
     include_package_data=True,
